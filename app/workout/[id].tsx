@@ -2,10 +2,13 @@ import { View, Text, ScrollView, Pressable, ActivityIndicator } from "react-nati
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { useWorkoutDetail } from "@/hooks/useWorkoutHistory";
 import { formatFullDate, formatDuration } from "@/utils/dates";
 
 export default function WorkoutDetailScreen() {
+  const { colorScheme } = useColorScheme();
+  const primaryColor = colorScheme === "dark" ? "#818CF8" : "#6366F1";
   const { id } = useLocalSearchParams<{ id: string }>();
   const { workout, isLoading } = useWorkoutDetail(Number(id));
 
@@ -31,7 +34,7 @@ export default function WorkoutDetailScreen() {
         {/* Header */}
         <View className="flex-row items-center px-4 pb-4 pt-2">
           <Pressable onPress={() => router.back()} className="mr-3 p-1">
-            <Ionicons name="arrow-back" size={24} color="#6366F1" />
+            <Ionicons name="arrow-back" size={24} color={primaryColor} />
           </Pressable>
           <Text className="flex-1 text-2xl font-bold text-text-primary">
             {workout.name || "Workout"}

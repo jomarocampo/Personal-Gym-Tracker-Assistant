@@ -2,6 +2,7 @@ import { View, Text, ScrollView, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState, useEffect } from "react";
 import { useMealLog } from "@/hooks/useMeals";
@@ -9,6 +10,8 @@ import { todayISO } from "@/utils/dates";
 import type { Meal } from "@/types";
 
 export default function MealDetailScreen() {
+  const { colorScheme } = useColorScheme();
+  const primaryColor = colorScheme === "dark" ? "#818CF8" : "#6366F1";
   const { id } = useLocalSearchParams<{ id: string }>();
   const db = useSQLiteContext();
   const [meal, setMeal] = useState<Meal | null>(null);
@@ -52,7 +55,7 @@ export default function MealDetailScreen() {
       <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 100 }}>
         <View className="flex-row items-center px-4 pb-4 pt-2">
           <Pressable onPress={() => router.back()} className="mr-3 p-1">
-            <Ionicons name="arrow-back" size={24} color="#6366F1" />
+            <Ionicons name="arrow-back" size={24} color={primaryColor} />
           </Pressable>
           <Text className="flex-1 text-2xl font-bold text-text-primary">
             {meal.name}

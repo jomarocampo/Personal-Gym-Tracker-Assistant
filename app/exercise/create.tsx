@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
@@ -34,6 +35,8 @@ const DIFFICULTY_OPTIONS: Difficulty[] = ["beginner", "intermediate", "advanced"
 const DIFFICULTY_LABELS = ["Beginner", "Intermediate", "Advanced"];
 
 export default function CreateExerciseScreen() {
+  const { colorScheme } = useColorScheme();
+  const primaryColor = colorScheme === "dark" ? "#818CF8" : "#6366F1";
   const { createExercise } = useExercises();
   const [name, setName] = useState("");
   const [muscleGroupIdx, setMuscleGroupIdx] = useState(0);
@@ -74,7 +77,7 @@ export default function CreateExerciseScreen() {
         >
           <View className="flex-row items-center px-4 pb-4 pt-2">
             <Pressable onPress={() => router.back()} className="mr-3 p-1">
-              <Ionicons name="arrow-back" size={24} color="#6366F1" />
+              <Ionicons name="arrow-back" size={24} color={primaryColor} />
             </Pressable>
             <Text className="text-2xl font-bold text-text-primary">
               Create Exercise

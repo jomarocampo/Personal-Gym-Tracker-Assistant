@@ -352,12 +352,12 @@ export default function ProfileScreen() {
             </Text>
             <View
               className={`w-12 h-7 rounded-full justify-center px-0.5 ${
-                settings.reminder_enabled ? "bg-success" : "bg-surface"
+                settings.reminder_enabled ? "bg-success" : "bg-surface-elevated border border-border"
               }`}
             >
               <View
-                className={`w-6 h-6 rounded-full bg-white ${
-                  settings.reminder_enabled ? "self-end" : "self-start"
+                className={`w-6 h-6 rounded-full ${
+                  settings.reminder_enabled ? "bg-white self-end" : "bg-text-muted self-start"
                 }`}
               />
             </View>

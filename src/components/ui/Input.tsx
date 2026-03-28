@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, KeyboardTypeOptions } from 'react-native';
+import { useColorScheme } from 'nativewind';
 
 interface InputProps {
   label?: string;
@@ -30,6 +31,9 @@ export function Input({
   autoCapitalize,
   autoCorrect,
 }: InputProps) {
+  const { colorScheme } = useColorScheme();
+  const placeholderColor = colorScheme === 'dark' ? '#6B7280' : '#9CA3AF';
+
   return (
     <View className="gap-1.5">
       {label ? (
@@ -47,7 +51,7 @@ export function Input({
           autoCapitalize={autoCapitalize}
           autoCorrect={autoCorrect}
           className="flex-1 text-text-primary text-base"
-          placeholderTextColor="#9ca3af"
+          placeholderTextColor={placeholderColor}
         />
         {suffix ? (
           <Text className="text-text-muted text-sm ml-2">{suffix}</Text>

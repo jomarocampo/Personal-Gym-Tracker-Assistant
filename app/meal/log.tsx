@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { useMealLog } from "@/hooks/useMeals";
 import { todayISO } from "@/utils/dates";
 import type { MealCategory } from "@/types";
@@ -24,6 +25,8 @@ const MEAL_TIMES: { label: string; value: MealCategory }[] = [
 ];
 
 export default function MealLogScreen() {
+  const { colorScheme } = useColorScheme();
+  const primaryColor = colorScheme === "dark" ? "#818CF8" : "#6366F1";
   const today = todayISO();
   const { entries, totals, logMeal } = useMealLog(today);
   const [mealTime, setMealTime] = useState<MealCategory>("lunch");
@@ -64,7 +67,7 @@ export default function MealLogScreen() {
           {/* Header */}
           <View className="flex-row items-center px-4 pb-4 pt-2">
             <Pressable onPress={() => router.back()} className="mr-3 p-1">
-              <Ionicons name="arrow-back" size={24} color="#6366F1" />
+              <Ionicons name="arrow-back" size={24} color={primaryColor} />
             </Pressable>
             <Text className="text-2xl font-bold text-text-primary">
               Log Meal
@@ -136,7 +139,7 @@ export default function MealLogScreen() {
             <TextInput
               className="mb-3 rounded-xl bg-surface px-4 py-3 text-text-primary"
               placeholder="Meal name"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
               value={customName}
               onChangeText={setCustomName}
             />
@@ -145,7 +148,7 @@ export default function MealLogScreen() {
               <TextInput
                 className="flex-1 rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                 placeholder="kcal"
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                 keyboardType="number-pad"
                 value={calories}
                 onChangeText={setCalories}
@@ -153,7 +156,7 @@ export default function MealLogScreen() {
               <TextInput
                 className="flex-1 rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                 placeholder="protein"
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                 keyboardType="decimal-pad"
                 value={protein}
                 onChangeText={setProtein}
@@ -161,7 +164,7 @@ export default function MealLogScreen() {
               <TextInput
                 className="flex-1 rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                 placeholder="carbs"
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                 keyboardType="decimal-pad"
                 value={carbs}
                 onChangeText={setCarbs}
@@ -169,7 +172,7 @@ export default function MealLogScreen() {
               <TextInput
                 className="flex-1 rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                 placeholder="fat"
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                 keyboardType="decimal-pad"
                 value={fat}
                 onChangeText={setFat}

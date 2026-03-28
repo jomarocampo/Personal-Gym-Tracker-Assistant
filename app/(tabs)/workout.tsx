@@ -2,12 +2,16 @@ import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { useWorkout } from "@/context/WorkoutContext";
 import { useTemplates } from "@/hooks/useTemplates";
 import { useWorkoutHistory } from "@/hooks/useWorkoutHistory";
 import { formatWorkoutDate, formatDuration } from "@/utils/dates";
 
 export default function WorkoutScreen() {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
+  const mutedColor = isDark ? "#6B7280" : "#9CA3AF";
   const { state } = useWorkout();
   const { templates } = useTemplates();
   const { sessions } = useWorkoutHistory(3);
@@ -119,7 +123,7 @@ export default function WorkoutScreen() {
                   <Ionicons
                     name="chevron-forward"
                     size={20}
-                    color="#9CA3AF"
+                    color={mutedColor}
                   />
                 </View>
               </Pressable>

@@ -1,5 +1,6 @@
 import { View, Text, TextInput, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import type { ActiveSet, WorkoutSet, WeightUnit } from "../../types";
 import { displayWeight, toKg } from "../../utils/units";
 
@@ -20,6 +21,13 @@ export function SetRow({
   onComplete,
   onDelete,
 }: SetRowProps) {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
+  const mutedColor = isDark ? "#6B7280" : "#9CA3AF";
+  const warningColor = isDark ? "#FBBF24" : "#F59E0B";
+  const successColor = isDark ? "#4ADE80" : "#22C55E";
+  const dangerColor = isDark ? "#F87171" : "#EF4444";
+
   const prevWeight = previousSet
     ? displayWeight(previousSet.weight_kg, weightUnit).toString()
     : "";
@@ -67,7 +75,7 @@ export function SetRow({
             });
           }}
           placeholder={prevWeight || weightUnit}
-          placeholderTextColor="#9CA3AF"
+          placeholderTextColor={mutedColor}
           keyboardType="decimal-pad"
           editable={!set.completed}
         />
@@ -83,7 +91,7 @@ export function SetRow({
             onUpdate({ reps: isNaN(num) ? null : num });
           }}
           placeholder={prevReps || "reps"}
-          placeholderTextColor="#9CA3AF"
+          placeholderTextColor={mutedColor}
           keyboardType="number-pad"
           editable={!set.completed}
         />
@@ -98,7 +106,7 @@ export function SetRow({
         <Ionicons
           name={set.is_warmup ? "flame" : "flame-outline"}
           size={18}
-          color={set.is_warmup ? "#F59E0B" : "#9CA3AF"}
+          color={set.is_warmup ? warningColor : mutedColor}
         />
       </Pressable>
 
@@ -114,14 +122,14 @@ export function SetRow({
         <Ionicons
           name={set.completed ? "checkmark-circle" : "checkmark-circle-outline"}
           size={24}
-          color={set.completed ? "#22C55E" : "#9CA3AF"}
+          color={set.completed ? successColor : mutedColor}
         />
       </Pressable>
 
       {/* Delete */}
       {!set.completed && (
         <Pressable className="w-6 items-center" onPress={onDelete}>
-          <Ionicons name="close" size={18} color="#EF4444" />
+          <Ionicons name="close" size={18} color={dangerColor} />
         </Pressable>
       )}
     </View>

@@ -3,6 +3,7 @@ import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { router } from "expo-router";
 import { useMeals, useMealLog } from "@/hooks/useMeals";
 import { useSettings } from "@/context/SettingsContext";
@@ -45,6 +46,9 @@ function MealCard({ meal }: { meal: Meal }) {
 }
 
 export default function MealsScreen() {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
+  const mutedColor = isDark ? "#6B7280" : "#9CA3AF";
   const [selectedCategory, setSelectedCategory] = useState<
     MealCategory | undefined
   >(undefined);
@@ -110,7 +114,7 @@ export default function MealsScreen() {
         </View>
 
         {/* Progress bar */}
-        <View className="mt-3 h-2 overflow-hidden rounded-full bg-surface">
+        <View className="mt-3 h-2 overflow-hidden rounded-full bg-surface-elevated">
           <View
             className="h-full rounded-full bg-primary"
             style={{
@@ -181,7 +185,7 @@ export default function MealsScreen() {
           contentContainerStyle={{ paddingBottom: 100 }}
           ListEmptyComponent={
             <View className="items-center justify-center py-12">
-              <Ionicons name="nutrition-outline" size={48} color="#9CA3AF" />
+              <Ionicons name="nutrition-outline" size={48} color={mutedColor} />
               <Text className="mt-3 text-base text-text-muted">
                 No meals found
               </Text>

@@ -13,7 +13,7 @@ export function SegmentedControl({
   onChange,
 }: SegmentedControlProps) {
   return (
-    <View className="bg-surface rounded-xl p-1 flex-row">
+    <View className="bg-surface-elevated border border-border rounded-xl p-1 flex-row">
       {options.map((option, index) => {
         const isSelected = index === selectedIndex;
         return (

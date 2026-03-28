@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { useMeals } from "@/hooks/useMeals";
 import type { MealCategory } from "@/types";
 
@@ -24,6 +25,8 @@ const CATEGORIES: { label: string; value: MealCategory }[] = [
 ];
 
 export default function CreateMealScreen() {
+  const { colorScheme } = useColorScheme();
+  const primaryColor = colorScheme === "dark" ? "#818CF8" : "#6366F1";
   const { createMeal } = useMeals();
   const [name, setName] = useState("");
   const [category, setCategory] = useState<MealCategory>("lunch");
@@ -61,7 +64,7 @@ export default function CreateMealScreen() {
         <ScrollView className="flex-1" keyboardShouldPersistTaps="handled">
           <View className="flex-row items-center px-4 pb-4 pt-2">
             <Pressable onPress={() => router.back()} className="mr-3 p-1">
-              <Ionicons name="arrow-back" size={24} color="#6366F1" />
+              <Ionicons name="arrow-back" size={24} color={primaryColor} />
             </Pressable>
             <Text className="text-2xl font-bold text-text-primary">
               Create Meal
@@ -72,7 +75,7 @@ export default function CreateMealScreen() {
             <TextInput
               className="rounded-xl bg-surface px-4 py-3 text-text-primary"
               placeholder="Meal name"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
               value={name}
               onChangeText={setName}
             />
@@ -110,7 +113,7 @@ export default function CreateMealScreen() {
                   className="rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                   keyboardType="number-pad"
                   placeholder="kcal"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                   value={calories}
                   onChangeText={setCalories}
                 />
@@ -121,7 +124,7 @@ export default function CreateMealScreen() {
                   className="rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                   keyboardType="decimal-pad"
                   placeholder="g"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                   value={protein}
                   onChangeText={setProtein}
                 />
@@ -132,7 +135,7 @@ export default function CreateMealScreen() {
                   className="rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                   keyboardType="decimal-pad"
                   placeholder="g"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                   value={carbs}
                   onChangeText={setCarbs}
                 />
@@ -143,7 +146,7 @@ export default function CreateMealScreen() {
                   className="rounded-xl bg-surface px-3 py-2.5 text-center text-text-primary"
                   keyboardType="decimal-pad"
                   placeholder="g"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
                   value={fat}
                   onChangeText={setFat}
                 />
@@ -153,7 +156,7 @@ export default function CreateMealScreen() {
             <TextInput
               className="h-24 rounded-xl bg-surface px-4 py-3 text-text-primary"
               placeholder="Instructions (optional)"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={colorScheme === "dark" ? "#6B7280" : "#9CA3AF"}
               multiline
               textAlignVertical="top"
               value={instructions}

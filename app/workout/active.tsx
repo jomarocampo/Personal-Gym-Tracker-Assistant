@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { useSQLiteContext } from "expo-sqlite";
 import { useWorkout } from "@/context/WorkoutContext";
 import { useSettings } from "@/context/SettingsContext";
@@ -24,10 +25,12 @@ function ExercisePickerModal({
   visible,
   onClose,
   onSelect,
+  mutedColor,
 }: {
   visible: boolean;
   onClose: () => void;
   onSelect: (exercise: Exercise) => void;
+  mutedColor: string;
 }) {
   const db = useSQLiteContext();
   const [search, setSearch] = useState("");
@@ -54,16 +57,16 @@ function ExercisePickerModal({
             Add Exercise
           </Text>
           <Pressable onPress={onClose}>
-            <Ionicons name="close" size={28} color="#9CA3AF" />
+            <Ionicons name="close" size={28} color={mutedColor} />
           </Pressable>
         </View>
 
         <View className="mx-4 mb-3 flex-row items-center rounded-xl bg-surface px-3 py-2">
-          <Ionicons name="search" size={18} color="#9CA3AF" />
+          <Ionicons name="search" size={18} color={mutedColor} />
           <TextInput
             className="ml-2 flex-1 text-base text-text-primary"
             placeholder="Search exercises..."
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={mutedColor}
             value={search}
             onChangeText={setSearch}
             autoFocus
@@ -146,7 +149,7 @@ function WorkoutSummaryModal({
           {newPRs.length > 0 && (
             <View className="mb-6 rounded-2xl bg-warning/10 p-4">
               <View className="mb-2 flex-row items-center">
-                <Ionicons name="trophy" size={24} color="#F59E0B" />
+                <Ionicons name="trophy" size={24} color="#FBBF24" />
                 <Text className="ml-2 text-lg font-bold text-warning">
                   New Personal Records!
                 </Text>
@@ -192,6 +195,12 @@ function WorkoutSummaryModal({
 }
 
 export default function ActiveWorkoutScreen() {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
+  const primaryColor = isDark ? "#818CF8" : "#6366F1";
+  const mutedColor = isDark ? "#6B7280" : "#9CA3AF";
+  const dangerColor = isDark ? "#F87171" : "#EF4444";
+  const warningColor = isDark ? "#FBBF24" : "#F59E0B";
   const {
     state,
     addExercise,
@@ -301,7 +310,7 @@ export default function ActiveWorkoutScreen() {
             value={state.sessionName}
             onChangeText={setSessionName}
             placeholder="Workout Name"
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={isDark ? "#6B7280" : "#9CA3AF"}
           />
           <Text className="text-sm text-primary">
             {formatDurationSeconds(elapsedSeconds)}
@@ -359,7 +368,7 @@ export default function ActiveWorkoutScreen() {
                   ]);
                 }}
               >
-                <Ionicons name="trash-outline" size={20} color="#EF4444" />
+                <Ionicons name="trash-outline" size={20} color={dangerColor} />
               </Pressable>
             </View>
 
@@ -418,7 +427,7 @@ export default function ActiveWorkoutScreen() {
           onPress={() => setShowExercisePicker(true)}
         >
           <View className="flex-row items-center justify-center">
-            <Ionicons name="add" size={24} color="#6366F1" />
+            <Ionicons name="add" size={24} color={primaryColor} />
             <Text className="ml-2 text-base font-semibold text-primary">
               Add Exercise
             </Text>
@@ -433,6 +442,7 @@ export default function ActiveWorkoutScreen() {
         visible={showExercisePicker}
         onClose={() => setShowExercisePicker(false)}
         onSelect={addExercise}
+        mutedColor={mutedColor}
       />
 
       {/* Workout Summary Modal */}

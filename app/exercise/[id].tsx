@@ -3,6 +3,7 @@ import { View, Text, ScrollView, Pressable, ActivityIndicator } from "react-nati
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { useExercise, useExerciseHistory } from "@/hooks/useExercises";
@@ -69,6 +70,8 @@ function formatDate(dateStr: string): string {
 }
 
 export default function ExerciseDetailScreen() {
+  const { colorScheme } = useColorScheme();
+  const primaryColor = colorScheme === "dark" ? "#818CF8" : "#6366F1";
   const { id } = useLocalSearchParams<{ id: string }>();
   const exerciseId = Number(id);
 
@@ -107,7 +110,7 @@ export default function ExerciseDetailScreen() {
             className="mr-3 p-1"
             hitSlop={8}
           >
-            <Ionicons name="arrow-back" size={24} className="text-text-primary" />
+            <Ionicons name="arrow-back" size={24} color={primaryColor} />
           </Pressable>
           <Text className="text-2xl font-bold text-text-primary flex-1" numberOfLines={2}>
             {exercise.name}

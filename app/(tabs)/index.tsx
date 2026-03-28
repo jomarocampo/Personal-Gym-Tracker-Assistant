@@ -2,6 +2,7 @@ import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import { useSettings } from "@/context/SettingsContext";
 import { useWorkout } from "@/context/WorkoutContext";
 import { useWeeklyStats } from "@/hooks/useWorkoutHistory";
@@ -15,10 +16,12 @@ function QuickAction({
   icon,
   label,
   onPress,
+  iconColor,
 }: {
   icon: keyof typeof Ionicons.glyphMap;
   label: string;
   onPress: () => void;
+  iconColor: string;
 }) {
   return (
     <Pressable
@@ -26,7 +29,7 @@ function QuickAction({
       style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
       onPress={onPress}
     >
-      <Ionicons name={icon} size={28} color="#6366F1" />
+      <Ionicons name={icon} size={28} color={iconColor} />
       <Text className="mt-2 text-center text-sm font-medium text-text-primary">
         {label}
       </Text>
@@ -35,6 +38,8 @@ function QuickAction({
 }
 
 export default function HomeScreen() {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
   const { settings } = useSettings();
   const { state: workoutState } = useWorkout();
   const { stats } = useWeeklyStats();
@@ -42,6 +47,9 @@ export default function HomeScreen() {
   const { totals: mealTotals } = useMealLog(todayISO());
   const { latestWeight } = useBodyMetrics();
 
+  const primaryColor = isDark ? "#818CF8" : "#6366F1";
+  const mutedColor = isDark ? "#6B7280" : "#9CA3AF";
+  const warningColor = isDark ? "#FBBF24" : "#F59E0B";
   const weightUnit = settings?.weight_unit ?? "kg";
   const targetWorkoutDays = settings?.target_workout_days ?? 4;
   const targetCalories = settings?.target_calories ?? 2500;
@@ -117,7 +125,7 @@ export default function HomeScreen() {
           </View>
 
           {/* Progress bar */}
-          <View className="mt-3 h-2 overflow-hidden rounded-full bg-surface">
+          <View className="mt-3 h-2 overflow-hidden rounded-full bg-surface-elevated">
             <View
               className="h-full rounded-full bg-primary"
               style={{
@@ -162,16 +170,19 @@ export default function HomeScreen() {
             icon="barbell-outline"
             label="Start Workout"
             onPress={() => router.push("/workout/new")}
+            iconColor={primaryColor}
           />
           <QuickAction
             icon="nutrition-outline"
             label="Log Meal"
             onPress={() => router.push("/meal/log")}
+            iconColor={primaryColor}
           />
           <QuickAction
             icon="scale-outline"
             label="Log Weight"
             onPress={() => router.push("/(tabs)/profile")}
+            iconColor={primaryColor}
           />
         </View>
 
@@ -198,7 +209,7 @@ export default function HomeScreen() {
                 key={pr.id}
                 className="mx-4 mb-2 flex-row items-center rounded-xl border border-warning/30 bg-warning/10 p-3"
               >
-                <Ionicons name="trophy" size={20} color="#F59E0B" />
+                <Ionicons name="trophy" size={20} color={warningColor} />
                 <View className="ml-3 flex-1">
                   <Text className="font-semibold text-text-primary">
                     {pr.exercise_name}
