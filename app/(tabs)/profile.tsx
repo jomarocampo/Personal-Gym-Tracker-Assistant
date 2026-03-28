@@ -11,6 +11,11 @@ import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import type { ThemeMode, WeightUnit, FitnessGoal } from "@/types";
 import { todayISO } from "@/utils/dates";
 import { formatWeight } from "@/utils/units";
+import {
+  getGrokApiKey,
+  setGrokApiKey,
+  deleteGrokApiKey,
+} from "@/services/secureStore";
 
 const WEIGHT_UNITS: WeightUnit[] = ["kg", "lbs"];
 const THEME_OPTIONS: ThemeMode[] = ["light", "dark", "system"];
@@ -41,11 +46,20 @@ export default function ProfileScreen() {
   const [targetCalories, setTargetCalories] = useState("");
   const [targetProtein, setTargetProtein] = useState("");
 
+  // AI Assistant
+  const [apiKey, setApiKey] = useState("");
+  const [hasApiKey, setHasApiKey] = useState(false);
+
   // Body metrics inline form
   const [showMetricForm, setShowMetricForm] = useState(false);
   const [metricDate] = useState(todayISO());
   const [metricWeight, setMetricWeight] = useState("");
   const [metricBodyFat, setMetricBodyFat] = useState("");
+
+  // Load API key status
+  useEffect(() => {
+    getGrokApiKey().then((key) => setHasApiKey(!!key));
+  }, []);
 
   // Sync local state when settings load
   useEffect(() => {
@@ -102,6 +116,28 @@ export default function ProfileScreen() {
     setMetricWeight("");
     setMetricBodyFat("");
     setShowMetricForm(false);
+  };
+
+  const handleSaveApiKey = async () => {
+    if (!apiKey.trim()) return;
+    await setGrokApiKey(apiKey.trim());
+    setHasApiKey(true);
+    setApiKey("");
+    Alert.alert("Saved", "Grok API key saved securely.");
+  };
+
+  const handleRemoveApiKey = () => {
+    Alert.alert("Remove API Key", "This will disconnect the AI Coach.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Remove",
+        style: "destructive",
+        onPress: async () => {
+          await deleteGrokApiKey();
+          setHasApiKey(false);
+        },
+      },
+    ]);
   };
 
   const handleExportData = () => {
@@ -349,7 +385,53 @@ export default function ProfileScreen() {
           ) : null}
         </Card>
 
-        {/* ── Section 6: Data ── */}
+        {/* ── Section 6: AI Assistant ── */}
+        <Text className="text-lg font-bold text-text-primary mb-3 mt-6">
+          AI Assistant
+        </Text>
+        <Card className="gap-3">
+          <View className="flex-row items-center justify-between">
+            <Text className="text-base text-text-primary">Grok API Key</Text>
+            <View
+              className={`px-2.5 py-1 rounded-full ${
+                hasApiKey ? "bg-success/20" : "bg-surface"
+              }`}
+            >
+              <Text
+                className={`text-xs font-medium ${
+                  hasApiKey ? "text-success" : "text-text-muted"
+                }`}
+              >
+                {hasApiKey ? "Connected" : "Not set"}
+              </Text>
+            </View>
+          </View>
+
+          {!hasApiKey && (
+            <>
+              <Input
+                label=""
+                value={apiKey}
+                onChangeText={setApiKey}
+                placeholder="xai-..."
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Button label="Save Key" onPress={handleSaveApiKey} />
+            </>
+          )}
+
+          {hasApiKey && (
+            <Button
+              label="Remove Key"
+              variant="destructive"
+              onPress={handleRemoveApiKey}
+            />
+          )}
+        </Card>
+
+        {/* ── Section 7: Data ── */}
         <Text className="text-lg font-bold text-text-primary mb-3 mt-6">
           Data
         </Text>

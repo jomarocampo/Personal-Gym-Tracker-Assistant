@@ -6,7 +6,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import { useColorScheme as useSystemColorScheme } from "react-native";
-import { useColorScheme } from "nativewind";
+import { colorScheme as nativeWindColorScheme } from "nativewind";
 import { useSQLiteContext } from "expo-sqlite";
 import type { ThemeMode } from "../types";
 
@@ -21,7 +21,6 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function ThemeProvider({ children }: PropsWithChildren) {
   const db = useSQLiteContext();
   const systemScheme = useSystemColorScheme();
-  const { setColorScheme } = useColorScheme();
   const [theme, setThemeState] = useState<ThemeMode>("system");
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -46,9 +45,9 @@ export function ThemeProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (isLoaded) {
-      setColorScheme(resolvedTheme);
+      nativeWindColorScheme.set(resolvedTheme);
     }
-  }, [resolvedTheme, isLoaded, setColorScheme]);
+  }, [resolvedTheme, isLoaded]);
 
   const setTheme = async (mode: ThemeMode) => {
     setThemeState(mode);

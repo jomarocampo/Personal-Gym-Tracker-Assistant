@@ -14,7 +14,9 @@
       "backgroundColor": "#6366F1"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.gymbuddy",
+      "appleTeamId": "RX48GRLV2J"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,12 +33,7 @@
     "plugins": [
       "expo-router",
       "expo-sqlite",
-      [
-        "expo-notifications",
-        {
-          "color": "#6366F1"
-        }
-      ]
+      "expo-secure-store"
     ]
   }
 }

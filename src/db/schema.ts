@@ -136,3 +136,16 @@ export const CREATE_INDEXES_SQL = `
 export const INSERT_DEFAULT_SETTINGS_SQL = `
   INSERT OR IGNORE INTO user_settings (id) VALUES (1);
 `;
+
+export const CREATE_CHAT_MESSAGES_SQL = `
+  CREATE TABLE IF NOT EXISTS chat_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now'))
+  );
+`;
+
+export const CREATE_CHAT_INDEXES_SQL = `
+  CREATE INDEX IF NOT EXISTS idx_chat_messages_created ON chat_messages(created_at);
+`;

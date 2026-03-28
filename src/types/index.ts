@@ -1,3 +1,5 @@
+export * from "./chat";
+
 // ── Enums / Union Types ──
 
 export type MuscleGroup =

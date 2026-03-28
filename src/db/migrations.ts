@@ -4,6 +4,8 @@ import {
   CREATE_TABLES_SQL,
   CREATE_INDEXES_SQL,
   INSERT_DEFAULT_SETTINGS_SQL,
+  CREATE_CHAT_MESSAGES_SQL,
+  CREATE_CHAT_INDEXES_SQL,
 } from "./schema";
 import { seedExercises, seedMeals, seedTemplates } from "./seed";
 
@@ -18,6 +20,11 @@ const migrations: Migration[] = [
     await seedExercises(db);
     await seedMeals(db);
     await seedTemplates(db);
+  },
+  // Version 1 -> 2: Add chat_messages table
+  async (db) => {
+    await db.execAsync(CREATE_CHAT_MESSAGES_SQL);
+    await db.execAsync(CREATE_CHAT_INDEXES_SQL);
   },
 ];
 

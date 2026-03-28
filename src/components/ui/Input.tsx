@@ -11,6 +11,9 @@ interface InputProps {
   suffix?: string;
   error?: string;
   multiline?: boolean;
+  secureTextEntry?: boolean;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  autoCorrect?: boolean;
 }
 
 export function Input({
@@ -23,6 +26,9 @@ export function Input({
   suffix,
   error,
   multiline = false,
+  secureTextEntry,
+  autoCapitalize,
+  autoCorrect,
 }: InputProps) {
   return (
     <View className="gap-1.5">
@@ -37,6 +43,9 @@ export function Input({
           placeholder={placeholder}
           keyboardType={keyboardType}
           multiline={multiline}
+          secureTextEntry={secureTextEntry}
+          autoCapitalize={autoCapitalize}
+          autoCorrect={autoCorrect}
           className="flex-1 text-text-primary text-base"
           placeholderTextColor="#9ca3af"
         />
